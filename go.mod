@@ -1,4 +1,4 @@
-module github.com/anlopes123/fullcyclegrpc
+module github.com/anlopes123/gRpc
 
 go 1.19
 

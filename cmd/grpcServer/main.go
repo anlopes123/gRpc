@@ -1,11 +1,16 @@
 package main
 
 import (
+	"database/sql"
+	"net"
 	"github.com/anlopes123/gRpc/internal/database"
 	"github.com/anlopes123/gRpc/internal/service"
+	"github.com/anlopes123/gRpc/internal/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"github.com/mattn/go-sqlite3"
+	
+	_ "github.com/mattn/go-sqlite3"
+	
 )
 
 func main(){

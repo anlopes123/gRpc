@@ -18,7 +18,7 @@ func NewCategory(db *sql.DB) *Category {
 
 func (c *Category) Create(name string, description string) (Category, error) {
 	id:= uuid.New().String();
-	_, err := c.db.Exec("INSERT INTO categories (id, name, description) VALUE($1, $2, $3)",
+	_, err := c.db.Exec("INSERT INTO categories (id, name, description) VALUES ($1, $2, $3)",
 		id, name, description)
 	if err != nil {
 		return Category{}, err
@@ -40,29 +40,29 @@ func (c *Category) FindAll() ([]Category, error) {
 		}
 		categories = append(categories, Category{ID: id, Name: name, Description: description})
 	}
-	return categories, nils
+	return categories, nil
 }
 
 func (c *Category) FindByCourseID(courseID string) (Category, error) { 
 	var id, name, description string
-	err:= c.db.QueryRow("SELECT c.id, c.name, c.description FROM categories c JOIN course co ON c.id=co.category_id WHERE co.id = $1", courseID)
-	  .Scan(&id, &name, &description)
+	err := c.db.QueryRow("SELECT c.id, c.name, c.description FROM categories c JOIN courses co ON c.id = co.category_id WHERE co.id = $1", courseID).
+		Scan(&id, &name, &description)
 	if err != nil {
 		return Category{}, err
 	}
 
-	return Category{ID: id, Name: name, Description: description} nil
+	return Category{ID: id, Name: name, Description: description}, nil
 
 }
 
-func (c *Category) Find(id string) (Category, err) {
-	var id, name, description string
-	err:= c.db.QueryRow("SELECT name, description FROM categories WHERE id = $1", id)
-	  .Scan(&id, &name, &description)
+func (c *Category) Find(id string) (Category, error) {
+	var name, description string
+	err:= c.db.QueryRow("SELECT id, name, description FROM categories WHERE id = $1", id).
+	   Scan(&id, &name, &description)
 	if err != nil {
 		return Category{}, err
 	}
 
-	return Category{ID: id, Name: name, Description: description} nil
+	return Category{ID: id, Name: name, Description: description}, nil
 
 }
